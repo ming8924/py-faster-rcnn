@@ -1,0 +1,25 @@
+pipa.py: class name to pipa
+imdb.__init__(self, 'pipa_' + image_set)
+self._data_path = os.path.join(self._devkit_path, 'data')
+self._classes = ('__background__', # always index 0
+                 'head')
+
+_do_python_eval annopath = os.path.join(
+            self._devkit_path,
+            'data',
+            'Annotations',
+            '{:s}.xml')
+
+            imagesetfile = os.path.join(
+            self._devkit_path,
+            'data',
+            'ImageSets',
+            'Main',
+
+_get_voc_results_file_template:
+	path = os.path.join(
+            self._devkit_path,
+            'results',
+            'data',
+            'Main',
+            filename)

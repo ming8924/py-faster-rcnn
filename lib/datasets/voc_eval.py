@@ -27,6 +27,7 @@ def parse_rec(filename):
         objects.append(obj_struct)
 
     return objects
+         
 
 def voc_ap(rec, prec, use_07_metric=False):
     """ ap = voc_ap(rec, prec, [use_07_metric])

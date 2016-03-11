@@ -101,13 +101,29 @@ class imdb(object):
 
     def append_flipped_images(self):
         num_images = self.num_images
+        print num_images
         widths = self._get_widths()
+        print len(self.roidb)
         for i in xrange(num_images):
+            print i    
             boxes = self.roidb[i]['boxes'].copy()
             oldx1 = boxes[:, 0].copy()
             oldx2 = boxes[:, 2].copy()
             boxes[:, 0] = widths[i] - oldx2 - 1
             boxes[:, 2] = widths[i] - oldx1 - 1
+            if not (boxes[:, 2] >= boxes[:, 0]).all():
+              # debugging for invalid annotation file
+              print "image index"
+              print i
+              print self.image_path_at(i)
+              print "widths"
+              print widths[i]
+              print "old index"
+              print oldx1 
+              print oldx2
+              print "new index"
+              print boxes[:, 2]
+              print boxes[:, 0]
             assert (boxes[:, 2] >= boxes[:, 0]).all()
             entry = {'boxes' : boxes,
                      'gt_overlaps' : self.roidb[i]['gt_overlaps'],

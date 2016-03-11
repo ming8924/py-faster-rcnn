@@ -29,6 +29,12 @@ case $DATASET in
     PT_DIR="pascal_voc"
     ITERS=70000
     ;;
+  pascal_voc_person)
+    TRAIN_IMDB="voc_2007_person_trainval"
+    TEST_IMDB="voc_2007_person_test"
+    PT_DIR="pascal_voc_person"
+    ITERS=70000
+    ;;
   coco)
     # This is a very long and slow training schedule
     # You can probably use fewer iterations and reduce the
@@ -38,6 +44,12 @@ case $DATASET in
     PT_DIR="coco"
     ITERS=490000
     ;;
+  pipa)
+		TRAIN_IMDB="pipa_train"
+		TEST_IMDB="pipa_test"
+		PT_DIR="pipa"
+		ITERS=70000
+		;;
   *)
     echo "No dataset given"
     exit
@@ -49,16 +61,19 @@ exec &> >(tee -a "$LOG")
 echo Logging output to "$LOG"
 
 time ./tools/train_net.py --gpu ${GPU_ID} \
-  --solver models/${PT_DIR}/${NET}/faster_rcnn_end2end/solver.prototxt \
-  --weights data/imagenet_models/${NET}.v2.caffemodel \
-  --imdb ${TRAIN_IMDB} \
-  --iters ${ITERS} \
-  --cfg experiments/cfgs/faster_rcnn_end2end.yml \
-  ${EXTRA_ARGS}
+ --solver models/${PT_DIR}/${NET}/faster_rcnn_end2end/solver.prototxt \
+ --weights data/imagenet_models/${NET}.v2.caffemodel \
+ --imdb ${TRAIN_IMDB} \
+ --iters ${ITERS} \
+ --cfg experiments/cfgs/faster_rcnn_end2end.yml \
+ ${EXTRA_ARGS}
 
 set +x
 NET_FINAL=`grep -B 1 "done solving" ${LOG} | grep "Wrote snapshot" | awk '{print $4}'`
 set -x
+
+#NET_FINAL="/home/hpl/work/py-faster-rcnn/output/faster_rcnn_end2end/train/zf_faster_rcnn_iter_70000.caffemodel"
+#NET_FINAL="/home/hpl/work/py-faster-rcnn/output/faster_rcnn_end2end/voc_2007_trainval/zf_faster_rcnn_iter_70000.caffemodel"
 
 time ./tools/test_net.py --gpu ${GPU_ID} \
   --def models/${PT_DIR}/${NET}/faster_rcnn_end2end/test.prototxt \
