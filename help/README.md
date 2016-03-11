@@ -38,7 +38,7 @@ You need to add a new python file describing the dataset we will use to the dire
 
 Then you should modify the `factory.py` in the same directory. For example, to add **pipa**, we should add
 
-```sh
+```python
 pipa_devkit_path = '/home/ming/work/py-faster-rcnn/data/pipa'
 for split in ['train', 'test']:
   name = 'pipa_{}'.format(split)
