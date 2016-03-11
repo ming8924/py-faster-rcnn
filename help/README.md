@@ -3,6 +3,9 @@
 This is inspired by the modification made in https://github.com/zeyuanxy/fast-rcnn to train Fast R-CNN for another dataset.
 Here we illustrate how to train a Faster R-CNN model with the Person in Personal Albums (PIPA) dataset 
 
+### Prepare Dataset
+We convert the annotations of PIPA to xml file to be consistent with Pascal VOC. This is done by convert_pipa_annotation.m, which calls VOCwritexml.m from the Pascal VOC devkit.
+
 ### Format Your Dataset
 
 At first, the dataset must be reorganized to the following structure.
@@ -16,36 +19,33 @@ pipa
     |-- ImageSets
          |-- train.txt
 ```
-We convert the annotations of PIPA to xml file to be consistent with Pascal VOC. This is done by 
 
 The `train.txt` contains all the names(without extensions) of images files that will be used for training. For example, there are a few lines in `train.txt` below.
 
 ```
-crop_000011
-crop_000603
-crop_000606
-crop_000607
-crop_000608
+1023628_46942247
+1023628_46942306
+1023628_46942388
+1023628_46942439
 ```
 
 ### Construct IMDB
 
-You need to add a new python file describing the dataset we will use to the directory `$FRCNN_ROOT/lib/datasets`, see `inria.py`. Then the following steps should be taken.
+You need to add a new python file describing the dataset we will use to the directory `$FRCNN_ROOT/lib/datasets`, see `pipa.py`. Then the following steps should be taken.
   - Modify `self._classes` in the constructor function to fit your dataset.
-  - Be careful with the extensions of your image files. See `image_path_from_index` in `inria.py`.
-  - Write the function for parsing annotations. See `_load_inria_annotation` in `inria.py`.
-  - Do not forget to add `import` syntaxes in your own python file and other python files in the same directory.
+  - Be careful with the extensions of your image files. See `image_path_from_index` in `pipa.py`.
+  - Since the format is consistent with Pascal VOC, we can reuse the function for parsing annotations. See `_load_pascal_annotation` in `pipa.py`.
 
-Then you should modify the `factory.py` in the same directory. For example, to add **INRIA Person**, we should add
+Then you should modify the `factory.py` in the same directory. For example, to add **pipa**, we should add
 
 ```sh
-inria_devkit_path = '/home/szy/INRIA'
+pipa_devkit_path = '/home/ming/work/py-faster-rcnn/data/pipa'
 for split in ['train', 'test']:
-    name = '{}_{}'.format('inria', split)
-    __sets[name] = (lambda split=split: datasets.inria(split, inria_devkit_path))
+  name = 'pipa_{}'.format(split)
+  __sets[name] = (lambda split=split: pipa(split, pipa_devkit_path))
 ```
+Once the dataset is format to be consistent with Pascal VOC, the above guidelines are pretty much all that is needed.
 
-See the example `inria.py` at https://github.com/EdisonResearch/fast-rcnn/blob/master/lib/datasets/inria.py.
 
 ### Modify Prototxt
 
@@ -54,6 +54,8 @@ For example, if you want to use the model **VGG16**, then you should modify `tra
   - Modify `num_output` in the `cls_score` layer to `C`
   - Modify `num_output` in the `bbox_pred` layer to `4 * C`
 
+Remeber to modify `solver.prototxt` to call the corresponding trai.prototxt file. 
+
 See https://github.com/rbgirshick/fast-rcnn/issues/11 for more details. 
 
 ### Train!
@@ -61,13 +63,11 @@ See https://github.com/rbgirshick/fast-rcnn/issues/11 for more details.
 In the directory **$FRCNN_ROOT**, run the following command in the shell.
 
 ```sh
-./tools/train_net.py --gpu 0 --solver models/VGG_CNN_M_1024/solver.prototxt \
-    --weights data/imagenet_models/VGG_CNN_M_1024.v2.caffemodel --imdb inria_train
+./experiments/scripts/faster_rcnn_end2end.sh 0 ZF pipa
 ```
-
-Be careful with the **imdb** argument as it specifies the dataset you will train on. Then just drink a cup of coffee and take a break to wait for the training.
 
 ### References
 
 [Fast-RCNN] https://github.com/rbgirshick/fast-rcnn
+
 [Train Fast-RCNN on Another Dataset] https://github.com/zeyuanxy/fast-rcnn
