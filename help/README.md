@@ -1,7 +1,7 @@
 # Train Faster-RCNN on Another Dataset
 
 This is inspired by the modification made in https://github.com/zeyuanxy/fast-rcnn to train Fast R-CNN for another dataset.
-Here we illustrate how to train a Faster R-CNN model with the Person in Personal Albums (PIPA) dataset 
+Here we illustrate how to train a Faster R-CNN model with the People in Personal Albums (PIPA) dataset http://www.cs.berkeley.edu/~nzhang/piper.html
 
 ### Prepare Dataset
 We convert the annotations of PIPA to xml file to be consistent with Pascal VOC. This is done by `convert_pipa_annotation.m`, which calls `VOCwritexml.m` from the Pascal VOC devkit. See details in `data/convert2VOC`

@@ -1,0 +1,21 @@
+<annotation>
+	<filename>188418_7539788</filename>
+	<size>
+		<width>1024</width>
+		<height>768</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>head</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>558</xmin>
+			<ymin>233</ymin>
+			<xmax>642</xmax>
+			<ymax>338</ymax>
+		</bndbox>
+	</object>
+</annotation>
