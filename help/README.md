@@ -4,7 +4,7 @@ This is inspired by the modification made in https://github.com/zeyuanxy/fast-rc
 Here we illustrate how to train a Faster R-CNN model with the Person in Personal Albums (PIPA) dataset 
 
 ### Prepare Dataset
-We convert the annotations of PIPA to xml file to be consistent with Pascal VOC. This is done by convert_pipa_annotation.m, which calls VOCwritexml.m from the Pascal VOC devkit.
+We convert the annotations of PIPA to xml file to be consistent with Pascal VOC. This is done by `convert_pipa_annotation.m`, which calls `VOCwritexml.m` from the Pascal VOC devkit. See details in `data/convert2VOC`
 
 ### Format Your Dataset
 
